@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:fragments="head">
+<head th:fragment="head">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -14,7 +14,7 @@
         }
     </style>
 </head>
-<nav th:fragments="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark">
+<nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark">
     <a class="navbar-brand" href="/" th:href="@{/}">
         <img src="/images/logo_sm.png" width="30" height="30">
     </a>
@@ -68,10 +68,10 @@
         </ul>
     </div>
 </nav>
-<footer th:fragments="footer">
+<footer th:fragment="footer">
     <div class="row justify-content-center">
-        <img class="mb-2" src="/images/logo_sm.jpg" alt="" width="100">
-        <small class="d-block mb-3 text-muted"> 2021</small>
+        <img class="mb-2" src="/images/logo_long_kr.jpg" alt="" width="100">
+        <small class="d-block mb-3 text-muted">&copy; 2020</small>
     </div>
 </footer>
 </html>
