@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.context.Context;
 
 import java.util.List;
 
@@ -48,7 +49,9 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    private void sendSignUpConfirmEmail(Account newAccount) {
+    public void sendSignUpConfirmEmail(Account newAccount) {
+        //Context context = new Context();
+
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setSubject("study olle, member join certification");
         mailMessage.setText("/check-email-token?token=" + newAccount.getEmailCheckToken() + "&email="+ newAccount.getEmail());
