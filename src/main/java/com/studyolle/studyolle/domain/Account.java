@@ -55,7 +55,7 @@ public class Account {
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();
     }
 
-    public void comlpeteSignUp(){
+    public void completeSignUp(){
         this.emailVerified = true;
         this.joinedAt = LocalDateTime.now();
     }
