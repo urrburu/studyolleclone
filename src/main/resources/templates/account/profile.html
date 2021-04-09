@@ -14,12 +14,7 @@ xmlns:th="http://www.thymeleaf.org">
                      th:src="${account.profileImage}"width="125" height="125"/>
             </div>
             <div class="col-8">
-                <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
-                    <span th:text="${message}">메시지</span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true"></span>
-                    </button>
-                </div>
+
                 <h1 class="display-4" th:text="${account.nickname}">............</h1>
                 <p class="lead" th:if="${!#strings.isEmpty(account.bio)}" th:tsxt="${account.bio}"> bio  </p>
                 <p class="lead" th:if="${#strings.isEmpty(account.bio)}" && isOwner}> 한줄 소개를 추가해주세요. </p>
