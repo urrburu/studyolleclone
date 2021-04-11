@@ -3,6 +3,7 @@ package com.studyolle.studyolle.account;
 import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
 import com.studyolle.studyolle.config.SecurityConfig;
 import com.studyolle.studyolle.domain.Account;
+import com.studyolle.studyolle.settings.Notifications;
 import com.studyolle.studyolle.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -109,5 +110,16 @@ public class AccountService implements UserDetailsService {
     public void updatePassword(Account account, String newPassword) {
         account.setPassword(passwordEncoder.encode(newPassword));
         accountRepository.save(account); //merge
+    }
+
+    public void updateNotifications(Account account, Notifications notifications) {
+        account.setStudyUpdatedByEmail(notifications.isStudyUpdatedByEmail());
+        account.setStudyUpdatedByWeb(notifications.isStudyUpdatedByWeb());
+        account.setStudyEnrollmentResultByEmail(notifications.isStudyEnrollmentResultByEmail());
+        account.setStudyEnrollmentResultByWeb(notifications.isStudyEnrollmentResultByWeb());
+        account.setStudyCreatedByEmail(notifications.isStudyCreatedByEmail());
+        account.setStudyCreatedByWeb(notifications.isStudyCreatedByWeb());
+        accountRepository.save(account);
+
     }
 }

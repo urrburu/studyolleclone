@@ -45,6 +45,8 @@ public class Account {
 
     private boolean studyEnrollmentResultByWeb;
 
+    private boolean studyUpdatedByEmail;
+
     private boolean studyUpdatedByWeb;
 
     private LocalDateTime emailCheckTokenGeneratedAt;
