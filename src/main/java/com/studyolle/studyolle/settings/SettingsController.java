@@ -4,6 +4,7 @@ import com.studyolle.studyolle.account.AccountService;
 import com.studyolle.studyolle.account.CurrentUser;
 import com.studyolle.studyolle.domain.Account;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -35,10 +36,12 @@ public class SettingsController {
     public static final String SETTINSG_NOTIFICATION_VIEW_NAME = "settings/notifications";
 
     private final AccountService accountService;
+    private final ModelMapper modelMapper;
+
     @GetMapping(SETTINGS_PROFILE_URL)
     public String updateProfileForm(@CurrentUser Account account, Model model){
         model.addAttribute(account);
-        model.addAttribute(new Profile(account));
+        model.addAttribute(modelMapper.map(account,Profile.class));
 
         return SETTINGS_PROFILE_VIEW_NAME;
     }
@@ -78,7 +81,7 @@ public class SettingsController {
     @GetMapping(SETTINGS_NOTIFICATION_URL)
     public String updateNotifications(@CurrentUser Account account, Model model){
         model.addAttribute(account);
-        model.addAttribute(new Notifications(account));
+        model.addAttribute(modelMapper.map(account, Notifications.class));
         return SETTINSG_NOTIFICATION_VIEW_NAME;
         }
 
