@@ -111,7 +111,7 @@ public class SettingsController {
     @GetMapping(SETTINGS_ACCOUNT_URL)
     public String updateAccount (@CurrentUser Account account, Model model){
         model.addAttribute(account);
-        model.addAttribute(modelMapper.map(account, Profile.class));
+        model.addAttribute(modelMapper.map(account, NicknameForm.class));
         return SETTINGS_ACCOUNT_VIEW_NAME;
     }
     @PostMapping(SETTINGS_ACCOUNT_URL)
@@ -124,5 +124,6 @@ public class SettingsController {
         attributes.addFlashAttribute("message", "닉네임을 수정했습니다.");
         return "redirect:"+SETTINGS_ACCOUNT_URL;
     }
+
 
 }
