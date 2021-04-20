@@ -3,6 +3,7 @@ package com.studyolle.studyolle.account;
 import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
 import com.studyolle.studyolle.config.SecurityConfig;
 import com.studyolle.studyolle.domain.Account;
+import com.studyolle.studyolle.domain.Tag;
 import com.studyolle.studyolle.settings.Notifications;
 import com.studyolle.studyolle.settings.Profile;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -128,5 +130,11 @@ public class AccountService implements UserDetailsService {
         mailMessage.setSubject("스터디 올래, 로그인 링크");
         mailMessage.setText("/login-by-email?token="+account.getEmailCheckToken()+"&email="+ account.getEmail());
         javaMailSender.send(mailMessage);
+    }
+
+    public void addTag(Account account, Tag tag) {
+       Optional<Account> byId = accountRepository.findById(account.getId());
+       byId.ifPresent(a->a.getTags().add(tag));
+
     }
 }
