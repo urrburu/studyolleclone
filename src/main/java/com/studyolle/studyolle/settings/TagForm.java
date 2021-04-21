@@ -1,8 +1,9 @@
 package com.studyolle.studyolle.settings;
 
+import lombok.Data;
+
+@Data
 public class TagForm {
-    private static String TagTitle;
-    public String getTagTitle() {
-        return TagTitle;
-    }
+    private String TagTitle;
+
 }
