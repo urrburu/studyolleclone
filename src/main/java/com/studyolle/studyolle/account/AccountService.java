@@ -1,7 +1,6 @@
 package com.studyolle.studyolle.account;
 
-import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
-import com.studyolle.studyolle.config.SecurityConfig;
+
 import com.studyolle.studyolle.domain.Account;
 import com.studyolle.studyolle.domain.Tag;
 import com.studyolle.studyolle.settings.Notifications;
@@ -10,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.authentication.AuthenticationManager;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,9 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.context.Context;
 
-import javax.swing.text.html.Option;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;

@@ -13,6 +13,7 @@ import java.util.UUID;
 public class Account {
     @Id @GeneratedValue
     private Long id;
+
     @Column(unique = true)
     private String email;
 

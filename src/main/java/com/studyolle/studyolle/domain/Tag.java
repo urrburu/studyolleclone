@@ -8,12 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-@Getter@Setter@EqualsAndHashCode(of="id")
-@Builder@AllArgsConstructor@NoArgsConstructor
+@Getter @Setter @EqualsAndHashCode(of="id")
+@Builder @AllArgsConstructor @NoArgsConstructor
 public class Tag {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
     @Column(unique = true, nullable = false)
