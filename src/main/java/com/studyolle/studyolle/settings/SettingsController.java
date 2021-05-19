@@ -6,7 +6,9 @@ import com.studyolle.studyolle.account.AccountService;
 import com.studyolle.studyolle.account.CurrentUser;
 import com.studyolle.studyolle.domain.Account;
 import com.studyolle.studyolle.domain.Tag;
+import com.studyolle.studyolle.domain.Zone;
 import com.studyolle.studyolle.tag.TagRepository;
+import com.studyolle.studyolle.zone.ZoneService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +48,7 @@ public class SettingsController {
     private final NicknameValidator nicknameValidator;
     private final TagRepository tagRepository;
     private final ObjectMapper objectMapper;
+    private final ZoneService zoneService;
 
 
     @InitBinder("passwordForm")
@@ -172,4 +175,11 @@ public class SettingsController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/settings/zone")
+    public String updateZone(@CurrentUser Account account, Model model) throws JsonProcessingException{
+
+        model.addAttribute(account);
+
+
+    }
 }

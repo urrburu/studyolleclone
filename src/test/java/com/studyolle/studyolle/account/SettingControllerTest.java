@@ -155,7 +155,7 @@ public class SettingControllerTest {
                 .andExpect(model().attributeExists("tags"));
 
     }
-
+/*
     @WithAccount("chanhwi")
     @DisplayName("계정 태그 추가")
     @Test
@@ -174,4 +174,6 @@ public class SettingControllerTest {
         Account chanhwi = accountRepository.findByNickname("chanhwi");
         assertTrue(chanhwi.getTags().contains(newTag));
     }
+
+ */
 }
