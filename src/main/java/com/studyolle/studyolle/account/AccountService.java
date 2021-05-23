@@ -58,6 +58,7 @@ public class AccountService implements UserDetailsService {
         //Context context = new Context();
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(newAccount.getEmail());
         mailMessage.setSubject("study olle, member join certification");
         mailMessage.setText("/check-email-token?token=" + newAccount.getEmailCheckToken() + "&email="+ newAccount.getEmail());
         javaMailSender.send(mailMessage);
