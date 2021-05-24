@@ -4,13 +4,17 @@ package com.studyolle.studyolle.account;
 import com.studyolle.studyolle.domain.Account;
 import com.studyolle.studyolle.domain.Tag;
 import com.studyolle.studyolle.domain.Zone;
+import com.studyolle.studyolle.mail.EmailMessage;
+import com.studyolle.studyolle.mail.EmailService;
 import com.studyolle.studyolle.settings.Notifications;
 import com.studyolle.studyolle.settings.Profile;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,18 +28,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
-    private final JavaMailSender javaMailSender;
+    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
@@ -55,13 +62,26 @@ public class AccountService implements UserDetailsService {
     }
 
     public void sendSignUpConfirmEmail(Account newAccount) {
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(newAccount.getEmail())
+                .subject("study olle, member join certification")
+                .message("/check-email-token?token=" + newAccount.getEmailCheckToken() + "&email="+ newAccount.getEmail())
+                .build();
+
+        emailService.sendEmail(emailMessage);
+
         //Context context = new Context();
 
+
+
+/*
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(newAccount.getEmail());
         mailMessage.setSubject("study olle, member join certification");
         mailMessage.setText("/check-email-token?token=" + newAccount.getEmailCheckToken() + "&email="+ newAccount.getEmail());
         javaMailSender.send(mailMessage);
+
+ */
     }
 
 
@@ -121,12 +141,21 @@ public class AccountService implements UserDetailsService {
     }
 
     public void sendLoginLink(Account account){
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(account.getEmail())
+                .subject("스터디 올래, 로그인 링크")
+                .message("/login-by-email?token="+account.getEmailCheckToken()+"&email="+ account.getEmail())
+                .build();
+        emailService.sendEmail(emailMessage);
+        /*
         account.generateEmailCheckToken();
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(account.getEmail());
         mailMessage.setSubject("스터디 올래, 로그인 링크");
         mailMessage.setText("/login-by-email?token="+account.getEmailCheckToken()+"&email="+ account.getEmail());
         javaMailSender.send(mailMessage);
+
+         */
     }
 
     public void addTag(Account account, Tag tag) {
