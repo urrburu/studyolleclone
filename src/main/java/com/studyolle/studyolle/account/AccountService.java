@@ -207,4 +207,11 @@ public class AccountService implements UserDetailsService {
     }
 
 
+    public Account getAccount(String nickname) {
+        Account account = accountRepository.findByNickname(nickname);
+        if(account ==null){
+            throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+        }
+        return account;
+    }
 }
