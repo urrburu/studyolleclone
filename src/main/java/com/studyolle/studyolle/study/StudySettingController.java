@@ -6,6 +6,7 @@ import com.studyolle.studyolle.domain.Study;
 import com.studyolle.studyolle.study.form.StudyDescriptionForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -59,6 +60,34 @@ public class StudySettingController {
         return URLEncoder.encode(path, StandardCharsets.UTF_8);
     }
 
+    @GetMapping("/banner")
+    public String studyImageForm (@CurrentUser Account account, @PathVariable String path, Model model){
+        Study study = studyService.getStudyToUpdate(account, path);
+        model.addAttribute(account);
+        model.addAttribute(study);
+        return "study/settings/banner";
+    }
+    @PostMapping("/banner")
+    public String studyImageSubmit (@CurrentUser Account account, @PathVariable String path,
+                                    String Image, RedirectAttributes attributes){
+        Study study = studyService.getStudyToUpdate(account, path);
+        studyService.updateStudyImage(study, Image);
+        attributes.addFlashAttribute("message", "스터디 이미지를 수정했습니다.");
+        return "redirect:/study/"+getPath(path)+"/settings/banner";
+    }
 
+    @PostMapping("banner/enable")
+    public String enableStudyBanner(@CurrentUser Account account, @PathVariable String path){
+        Study study = studyService.getStudyToUpdate(account, path);
+        studyService.enableStudyBanner(study);
+        return "redirect:/study/"+ getPath(path)+"/settings/banner";
+    }
+
+    @PostMapping("banner/disable")
+    public String disableStudyBanner(@CurrentUser Account account, @PathVariable String path){
+        Study study = studyService.getStudyToUpdate(account, path);
+        studyService.disableStudyBanner(study);
+        return "redirect:/study/"+ getPath(path)+"/settings/banner";
+    }
 
 }
