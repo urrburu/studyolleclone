@@ -58,11 +58,10 @@ public class StudyService {
         study.setUseBanner(false);
     }
 
-    public void addTag(Study study, Tag tag) { study.getTags().add(tag);
-    }
-
-    public void removeTag(Study study, Tag tag) { study.getTags().remove(tag);
-    }
+    public void addTag(Study study, Tag tag) { study.getTags().add(tag); }
+    public void removeTag(Study study, Tag tag) { study.getTags().remove(tag); }
     public void addZone(Study study, Zone zone){study.getZones().add(zone);}
     public void removeZone(Study study, Zone zone){study.getZones().remove(zone);}
+
+
 }

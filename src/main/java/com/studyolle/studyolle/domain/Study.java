@@ -2,26 +2,23 @@ package com.studyolle.studyolle.domain;
 
 import com.studyolle.studyolle.account.UserAccount;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@NamedEntityGraph(name="Study.withAll", attributeNodes = {
+@NamedEntityGraph(name = "Study.withAll", attributeNodes = {
         @NamedAttributeNode("tags"),
         @NamedAttributeNode("zones"),
         @NamedAttributeNode("managers"),
         @NamedAttributeNode("members")})
-@NamedEntityGraph(name="Study.withTagsAndManagers", attributeNodes = {
+@NamedEntityGraph(name = "Study.withTagsAndManagers", attributeNodes = {
         @NamedAttributeNode("tags"),
         @NamedAttributeNode("managers")})
-@NamedEntityGraph(name="Study.withTagsAndManagers", attributeNodes = {
+@NamedEntityGraph(name = "Study.withZonesAndManagers", attributeNodes = {
         @NamedAttributeNode("zones"),
         @NamedAttributeNode("managers")})
-
 @Entity
 @Getter@Setter @EqualsAndHashCode(of="id")
 @Builder@AllArgsConstructor
@@ -87,4 +84,5 @@ public class Study {
     public boolean isManager(UserAccount userAccount){
         return this.managers.contains(userAccount.getAccount());
     }
+
 }

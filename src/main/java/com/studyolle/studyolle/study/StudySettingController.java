@@ -136,6 +136,9 @@ public class StudySettingController {
         studyService.removeTag(study, tag);
         return ResponseEntity.ok().build();
     }
+
+
+
     @GetMapping("/zones")
     public String studyZoneForm(@CurrentUser Account account, @PathVariable String path, Model model) throws JsonProcessingException {
         Study study = studyService.getStudyToUpdate(account, path);
