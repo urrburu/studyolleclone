@@ -62,6 +62,31 @@ public class StudyService {
     public void removeTag(Study study, Tag tag) { study.getTags().remove(tag); }
     public void addZone(Study study, Zone zone){study.getZones().add(zone);}
     public void removeZone(Study study, Zone zone){study.getZones().remove(zone);}
+    
+    public Study getStudyToUpdateTag(Account account, String path){
+        Study study = repository.findStudyWithTagsByPath(path);
+        checkIfExistingStudy(path, study);
+        checkIfManager(account, study);
+        return study;
+    }
+    public Study getStudyToUpdateZone(Account account, String path) {
+        Study study = repository.findStudyWithZonesByPath(path);
+        checkIfExistingStudy(path, study);
+        checkIfManager(account, study);
+        return study;
+    }
+
+    private void checkIfManager(Account account, Study study) {
+        if(!study.isManagedBy(account)){
+            throw new AccessDeniedException("해당기능을 사용할 수 없습니다.");
+        }
+    }
+
+    private void checkIfExistingStudy(String path, Study study) {
+        if (study == null) {
+            throw new IllegalArgumentException(path + "에 해당하는 스터디가 없습니다.");
+        }
+    }
 
 
 }
