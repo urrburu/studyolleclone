@@ -7,7 +7,6 @@ import com.studyolle.studyolle.study.form.StudyForm;
 import com.studyolle.studyolle.study.validator.StudyFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -59,7 +58,7 @@ public class StudyController {
         Study study = studyService.getStudy(path);
 
         model.addAttribute(account);
-        model.addAttribute(studyRepository.findByPath(path));
+        model.addAttribute(study);
         return "study/view";
     }
 

@@ -4,13 +4,17 @@ import com.studyolle.studyolle.domain.Account;
 import com.studyolle.studyolle.domain.Study;
 import com.studyolle.studyolle.domain.Tag;
 import com.studyolle.studyolle.domain.Zone;
+import com.studyolle.studyolle.study.event.StudyCreatedEvent;
+import com.studyolle.studyolle.study.event.StudyUpdateEvent;
 import com.studyolle.studyolle.study.form.StudyDescriptionForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 
 
 @Service
@@ -20,6 +24,7 @@ public class StudyService {
 
     private final StudyRepository repository;
     private final ModelMapper modelMapper;
+    private ApplicationEventPublisher eventPublisher;
 
     public Study createNewStudy(Study study, Account account) {
         Study newStudy = repository.save(study);
@@ -89,4 +94,27 @@ public class StudyService {
     }
 
 
+    public Study getStudyToUpdateStatus(Account account, String path) {
+        Study study = repository.findStudyWithManagersByPath(path);
+        checkIfExistingStudy(path, study);
+        checkIfManager(account, study);
+        return study;
+    }
+
+    public void publish(Study study) {
+        study.publish();
+        //this.eventPublisher.publishEvent(new StudyCreatedEvent(study));
+    }
+
+    public void close(Study study) {
+        study.close();
+        //this.eventPublisher.publishEvent(new StudyCreatedEvent(study));
+    }
+
+    public void startRecruit(Study study) {
+        study.startRecruit();
+    }
+    public void stopRecruit(Study study){
+        study.stopRecruit();
+    }
 }
