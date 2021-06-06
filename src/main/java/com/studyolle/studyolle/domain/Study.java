@@ -132,4 +132,6 @@ public class Study {
     }
 
     public String getEncodedPath() {return URLEncoder.encode(this.path, StandardCharsets.UTF_8);    }
+
+    public boolean isRemovable() { return !this.published;  }
 }
