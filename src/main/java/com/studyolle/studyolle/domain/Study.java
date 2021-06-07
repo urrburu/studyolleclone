@@ -23,6 +23,8 @@ import java.util.Set;
         @NamedAttributeNode("managers")})
 @NamedEntityGraph(name = "Study.withManagers", attributeNodes = {
         @NamedAttributeNode("managers")})
+@NamedEntityGraph(name = "Study.withMembers", attributeNodes = {
+        @NamedAttributeNode("members")})
 @Entity
 @Getter@Setter @EqualsAndHashCode(of="id")
 @Builder@AllArgsConstructor
@@ -70,6 +72,8 @@ public class Study {
     private boolean published;
 
     private boolean useBanner;
+
+    private int memberCount;
 
     public void addManager(Account account) {
         this.managers.add(account);
@@ -134,4 +138,8 @@ public class Study {
     public String getEncodedPath() {return URLEncoder.encode(this.path, StandardCharsets.UTF_8);    }
 
     public boolean isRemovable() { return !this.published;  }
+
+    public void addMember(Account account) { this.getMembers().add(account); this.memberCount++; }
+
+    public void removeMember(Account account) { this.getMembers().remove(account); this.memberCount--;}
 }
