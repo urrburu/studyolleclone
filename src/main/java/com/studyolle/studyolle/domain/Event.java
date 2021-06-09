@@ -30,7 +30,7 @@ public class Event {
     private LocalDateTime createdDateTime;
 
     @Column(nullable = false)
-    private LocalDateTime endEnrollmentDataTime;
+    private LocalDateTime endEnrollmentDateTime;
 
     @Column(nullable = false)
     private LocalDateTime startDateTime;
