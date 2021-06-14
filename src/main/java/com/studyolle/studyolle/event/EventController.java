@@ -2,6 +2,7 @@ package com.studyolle.studyolle.event;
 
 import com.studyolle.studyolle.account.CurrentUser;
 import com.studyolle.studyolle.domain.Account;
+import com.studyolle.studyolle.domain.Enrollment;
 import com.studyolle.studyolle.domain.Event;
 import com.studyolle.studyolle.domain.Study;
 import com.studyolle.studyolle.event.validator.EventValidator;
@@ -30,6 +31,7 @@ public class EventController {
     private final ModelMapper modelMapper;
     private final EventValidator eventValidator;
     private final EventRepository eventRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
     @InitBinder("eventForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -132,18 +134,50 @@ public class EventController {
         return "redirect:/study/"+ study.getEncodedPath()+"/events";
     }
     @PostMapping("events/{id}/enroll")
-    public String joinEvent(@CurrentUser Account account, @PathVariable String path, @PathVariable Long id){
+    public String joinEvent(@CurrentUser Account account, @PathVariable String path, @PathVariable("id") Event event){
         Study study = studyService.getStudyToEnroll(path);
-        Event event = eventRepository.findById(id).orElseThrow();
         eventService.newEnrollment(event, account);
         return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
 
     }
     @PostMapping("/events/{id}/disenroll")
-    public String disEnrollEvent(@CurrentUser Account account, @PathVariable String path, @PathVariable Long id){
+    public String disEnrollEvent(@CurrentUser Account account, @PathVariable String path, @PathVariable("id") Event event)
+    {
         Study study = studyService.getStudyToEnroll(path);
-        Event event = eventRepository.findById(id).orElseThrow();
         eventService.cancelEnrollment(event, account);
+        return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
+    }
+    @GetMapping("events/{eventId}/enrollments/{enrollmentId}/accept")
+    public String acceptEnrollment(@CurrentUser Account account, @PathVariable String path,
+                                   @PathVariable Long eventId, @PathVariable Long enrollmentId) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        Event event = eventRepository.findById(eventId).orElseThrow();
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElseThrow();
+        eventService.acceptEnrollment(event, enrollment);
+        return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
+    }
+
+    @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/reject")
+    public String rejectEnrollment(@CurrentUser Account account, @PathVariable String path,
+                                   @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        eventService.rejectEnrollment(event, enrollment);
+        return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
+    }
+
+    @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/checkin")
+    public String checkInEnrollment(@CurrentUser Account account, @PathVariable String path,
+                                    @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        eventService.checkInEnrollment(enrollment);
+        return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
+    }
+
+    @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/cancel-checkin")
+    public String cancelCheckInEnrollment(@CurrentUser Account account, @PathVariable String path,
+                                          @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        eventService.cancelCheckInEnrollment(enrollment);
         return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();
     }
 
