@@ -1,6 +1,7 @@
 package com.studyolle.studyolle.modules.study;
 
 import com.studyolle.studyolle.modules.account.Account;
+import com.studyolle.studyolle.modules.study.event.StudyCreatedEvent;
 import com.studyolle.studyolle.modules.tag.Tag;
 import com.studyolle.studyolle.modules.zone.Zone;
 import com.studyolle.studyolle.modules.study.form.StudyDescriptionForm;
@@ -21,11 +22,12 @@ public class StudyService {
 
     private final StudyRepository repository;
     private final ModelMapper modelMapper;
-    private ApplicationEventPublisher eventPublisher;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Study createNewStudy(Study study, Account account) {
         Study newStudy = repository.save(study);
         newStudy.addManager(account);
+        eventPublisher.publishEvent(new StudyCreatedEvent(newStudy));
         return newStudy;
     }
 
