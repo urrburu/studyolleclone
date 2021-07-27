@@ -1,11 +1,13 @@
 package com.studyolle.studyolle.modules.notification;
 
 import com.studyolle.studyolle.modules.account.Account;
+
 import com.studyolle.studyolle.modules.account.UserAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -34,4 +36,7 @@ public class NotificationInterceptor extends InterceptorRegistry implements Hand
 
         return modelAndView.getViewName().startsWith("redirect:") || modelAndView.getView() instanceof RedirectView;
     }
+
+
+
 }
