@@ -2,7 +2,6 @@ package com.studyolle.studyolle.modules.notification;
 
 import com.studyolle.studyolle.modules.account.Account;
 import com.studyolle.studyolle.modules.account.CurrentUser;
-import javassist.compiler.NoFieldException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +19,7 @@ public class NotificationController {
 
     @GetMapping("/notifications")
     public String getNotification(@CurrentUser Account account, Model model){
-        List<Notification> notifications = repository.findByAccountAndCheckedOrderByCreatedDateTimeDesc(account, false);
+        List<Notification> notifications = repository.findByAccountAndCheckedOrderByCreatedDatetimeDesc(account, false);
         long numberOfChecked = repository.countByAccountAndChecked(account, true);
         putCategorizedNotification(model, notifications, numberOfChecked, notifications.size());
         model.addAttribute("isNew", true);
@@ -29,7 +28,7 @@ public class NotificationController {
     }
     @GetMapping("/notifications/old")
     public String getOldNotifications(@CurrentUser Account account, Model model){
-        List<Notification> notifications = repository.findByAccountAndCheckedOrderByCreatedDateTimeDesc(account, true);
+        List<Notification> notifications = repository.findByAccountAndCheckedOrderByCreatedDatetimeDesc(account, true);
         long numberOfNotChecked = repository.countByAccountAndChecked(account, false);
         putCategorizedNotification(model, notifications, notifications.size(), numberOfNotChecked);
         model.addAttribute("isNew", false);

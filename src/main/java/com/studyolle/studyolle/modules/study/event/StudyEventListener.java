@@ -37,7 +37,7 @@ public class StudyEventListener {
     private final NotificationRepository notificationRepository;
 
     @EventListener
-    public void handlerStudyCreatedEvent(StudyCreatedEvent studyCreatedEvent){
+    public void handleStudyCreatedEvent(StudyCreatedEvent studyCreatedEvent){
         Study study = studyRepository.findStudyWithTagsAndZonesById(studyCreatedEvent.getStudy().getId());
         Iterable<Account> accounts = accountRepository.findAll(AccountPredicates.findByTagsAndZones(study.getTags(),study.getZones()));
         accounts.forEach(account -> {
@@ -56,7 +56,7 @@ public class StudyEventListener {
         notification.setTitle(study.getTitle());
         notification.setLink("/study/"+ study.getEncodedPath());
         notification.setChecked(false);
-        notification.setCreatedLocalDateTime(LocalDateTime.now());
+        notification.setCreatedDatetime(LocalDateTime.now());
         notification.setMessage(study.getShortDescription());
         notification.setAccount(account);
         notification.setNotificationType(NotificationType.STUDY_CREATED);

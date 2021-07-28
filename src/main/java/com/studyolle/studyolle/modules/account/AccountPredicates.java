@@ -7,6 +7,7 @@ import com.studyolle.studyolle.modules.zone.Zone;
 import java.util.Set;
 
 
+
 public class AccountPredicates {
 
     public static Predicate findByTagsAndZones(Set<Tag> tags, Set<Zone> zones){
