@@ -81,7 +81,6 @@
         <small class="d-block mb-3 text-muted">&copy; 2020</small>
     </div>
 </footer>
-
 <script type="application/javascript" th:fragment="form-validation">
     (function () {
         'use strict';
@@ -103,16 +102,21 @@
         }, false)
     }())
 </script>
+
+
 <ul th:fragment="notification-list (notifications)" class="list-group list-group-flush">
     <a href="#" th:href="@{${noti.link}}" th:each="noti: ${notifications}"
        class="list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-between">
             <small class="text-muted" th:text="${noti.title}">Noti title</small>
-            <small class="fromNow text-muted" th:text="${noti.createdDatetime}">3 days ago</small>
+            <small class="fromNow text-muted" th:text="${noti.createdDateTime}">3 days ago</small>
         </div>
         <p th:text="${noti.message}" class="text-left mb-0 mt-1">message</p>
     </a>
 </ul>
+
+
+
 <script type="application/javascript" th:inline="javascript" th:fragment="ajax-csrf-header">
     $(function() {
         var csrfToken = /*[[${_csrf.token}]]*/ null;
@@ -453,6 +457,35 @@
             </div>
         </form>
     </div>
+</div>
+<div th:fragment="date-time">
+    <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            moment.locale('ko');
+            $(".date-time").text(function(index, dateTime) {
+                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LLL');
+            });
+            $(".date").text(function(index, dateTime) {
+                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LL');
+            });
+            $(".weekday").text(function(index, dateTime) {
+                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('dddd');
+            });
+            $(".time").text(function(index, dateTime) {
+                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LT');
+            });
+            $(".calendar").text(function(index, dateTime) {
+                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").calendar();
+            });
+            $(".fromNow").text(function(index, dateTime) {
+                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").fromNow();
+            });
+            $(".date-weekday-time").text(function(index, dateTime) {
+                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LLLL');
+            });
+        })
+    </script>
 </div>
 
 </html>

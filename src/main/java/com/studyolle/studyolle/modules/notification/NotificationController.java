@@ -14,48 +14,55 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class NotificationController {
+
     private final NotificationRepository repository;
+
     private final NotificationService service;
 
     @GetMapping("/notifications")
-    public String getNotification(@CurrentUser Account account, Model model){
-        List<Notification> notifications = repository.findByAccountAndCheckedOrderByCreatedDatetimeDesc(account, false);
+    public String getNotifications(@CurrentUser Account account, Model model) {
+        List<Notification> notifications = repository.findByAccountAndCheckedOrderByCreatedDateTimeDesc(account, false);
         long numberOfChecked = repository.countByAccountAndChecked(account, true);
-        putCategorizedNotification(model, notifications, numberOfChecked, notifications.size());
+        putCategorizedNotifications(model, notifications, numberOfChecked, notifications.size());
         model.addAttribute("isNew", true);
         service.markAsRead(notifications);
         return "notification/list";
     }
+
     @GetMapping("/notifications/old")
-    public String getOldNotifications(@CurrentUser Account account, Model model){
-        List<Notification> notifications = repository.findByAccountAndCheckedOrderByCreatedDatetimeDesc(account, true);
+    public String getOldNotifications(@CurrentUser Account account, Model model) {
+        List<Notification> notifications = repository.findByAccountAndCheckedOrderByCreatedDateTimeDesc(account, true);
         long numberOfNotChecked = repository.countByAccountAndChecked(account, false);
-        putCategorizedNotification(model, notifications, notifications.size(), numberOfNotChecked);
+        putCategorizedNotifications(model, notifications, notifications.size(), numberOfNotChecked);
         model.addAttribute("isNew", false);
         return "notification/list";
     }
 
     @DeleteMapping("/notifications")
-    public String deleteNotifications(@CurrentUser Account account){
+    public String deleteNotifications(@CurrentUser Account account) {
         repository.deleteByAccountAndChecked(account, true);
         return "redirect:/notifications";
     }
-    private void putCategorizedNotification(Model model, List<Notification> notifications, long numberOfChecked, long numberOfNotChecked) {
+
+    private void putCategorizedNotifications(Model model, List<Notification> notifications,
+                                             long numberOfChecked, long numberOfNotChecked) {
         List<Notification> newStudyNotifications = new ArrayList<>();
         List<Notification> eventEnrollmentNotifications = new ArrayList<>();
         List<Notification> watchingStudyNotifications = new ArrayList<>();
-        for(var notification : notifications){
-            switch (notification.getNotificationType()){
-                case STUDY_CREATED:newStudyNotifications.add(notification);break;
-                case EVENT_ENROLLMENT:eventEnrollmentNotifications.add(notification);break;
-                case STUDY_UPDATED:watchingStudyNotifications.add(notification);break;
+        for (var notification : notifications) {
+            switch (notification.getNotificationType()) {
+                case STUDY_CREATED: newStudyNotifications.add(notification); break;
+                case EVENT_ENROLLMENT: eventEnrollmentNotifications.add(notification); break;
+                case STUDY_UPDATED: watchingStudyNotifications.add(notification); break;
             }
         }
+
         model.addAttribute("numberOfNotChecked", numberOfNotChecked);
-        model.addAttribute("numberOfChecked",numberOfChecked);
+        model.addAttribute("numberOfChecked", numberOfChecked);
         model.addAttribute("notifications", notifications);
         model.addAttribute("newStudyNotifications", newStudyNotifications);
         model.addAttribute("eventEnrollmentNotifications", eventEnrollmentNotifications);
         model.addAttribute("watchingStudyNotifications", watchingStudyNotifications);
     }
+
 }
