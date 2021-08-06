@@ -40,6 +40,8 @@ public class MainController {
     @GetMapping("/search/study")
     public String searchStudy(String keyword, Model model){
         List<Study> studyList = studyRepository.findByKeyword(keyword);
-        return "";
+        model.addAttribute(studyList);
+        model.addAttribute("keyword", keyword);
+        return "search";
     }
 }
