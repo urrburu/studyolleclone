@@ -4,14 +4,18 @@ import com.studyolle.studyolle.modules.account.Account;
 import com.studyolle.studyolle.modules.study.event.StudyCreatedEvent;
 import com.studyolle.studyolle.modules.study.event.StudyUpdateEvent;
 import com.studyolle.studyolle.modules.tag.Tag;
+import com.studyolle.studyolle.modules.tag.TagRepository;
 import com.studyolle.studyolle.modules.zone.Zone;
 import com.studyolle.studyolle.modules.study.form.StudyDescriptionForm;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
 
 import static com.studyolle.studyolle.modules.study.form.StudyForm.VALID_PATH_PATTERN;
 
@@ -24,6 +28,7 @@ public class StudyService {
     private final StudyRepository repository;
     private final ModelMapper modelMapper;
     private final ApplicationEventPublisher eventPublisher;
+    private final TagRepository tagRepository;
 
     public Study createNewStudy(Study study, Account account) {
         Study newStudy = repository.save(study);
@@ -161,4 +166,21 @@ public class StudyService {
     }
 
 
+    public void generateTestStudies(Account account) {
+        for(int i=0;i<30;++i){
+            String randomvalue = RandomString.make(5);
+            Study st = Study.builder()
+                    .title("테스트 스터디 "+ randomvalue)
+                    .path("test-"+randomvalue)
+                    .shortDescription("테스트용 스터디")
+                    .fullDescription("test")
+                    .tags(new HashSet<>())
+                    .managers(new HashSet<>())
+                    .build();
+            st.publish();
+            Study newStudy = this.createNewStudy(st, account);
+            Tag spring = tagRepository.findByTitle("spring");
+            newStudy.getTags().add(spring);
+        }
+    }
 }
