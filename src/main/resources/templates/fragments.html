@@ -248,7 +248,7 @@
 </div>
 
 <div th:fragment="editor-script">
-    <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
+    <script src="/static/node_modules/summernote/dist/summernote-bs4.js"></script>
     <script type="application/javascript">
         $(function () {
             $('.editor').summernote({
@@ -272,7 +272,7 @@
     })
 </script>
 <div th:fragment="update-tags (baseUrl)">
-    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script src="/static/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script type="application/javascript" th:inline="javascript">
         $(function() {
             function tagRequest(url, tagTitle) {
