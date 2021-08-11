@@ -1,7 +1,9 @@
 package com.studyolle.studyolle.modules.main;
 
+import com.studyolle.studyolle.modules.account.AccountRepository;
 import com.studyolle.studyolle.modules.account.CurrentUser;
 import com.studyolle.studyolle.modules.account.Account;
+import com.studyolle.studyolle.modules.event.EnrollmentRepository;
 import com.studyolle.studyolle.modules.notification.NotificationRepository;
 import com.studyolle.studyolle.modules.study.Study;
 import com.studyolle.studyolle.modules.study.StudyRepository;
@@ -23,17 +25,15 @@ public class MainController {
 
     private final NotificationRepository notificationRepository;
     private final StudyRepository studyRepository;
+    private final AccountRepository accountRepository;
+    private final EnrollmentRepository enrollmentRepository;
+
 
 
     @GetMapping("/")
-    public String home(@CurrentUser Account account, Model model)
-    {
-        if(account != null){
-            model.addAttribute(account);
-        }
+    public String home(@CurrentUser Account account, Model model) {
 
-        long count = notificationRepository.countByAccountAndChecked(account,false);
-        model.addAttribute("hasNotification", count>0);
+        model.addAttribute("studyList", studyRepository.findFirst9ByPublishedAndClosedOrderByPublishedDateTimeDesc(true, false));
         return "index";
     }
 
