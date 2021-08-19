@@ -32,11 +32,23 @@ public class MainController {
 
     @GetMapping("/")
     public String home(@CurrentUser Account account, Model model) {
+        if (account != null) {
+            Account accountLoaded = accountRepository.findAccountWithTagsAndZonesById(account.getId());
+            model.addAttribute(accountLoaded);
+            model.addAttribute("enrollmentList", enrollmentRepository.findByAccountAndAcceptedOrderByEnrolledAtDesc(accountLoaded, true));
+            model.addAttribute("studyList", studyRepository.findByAccount(
+                    accountLoaded.getTags(),
+                    accountLoaded.getZones()));
+            model.addAttribute("studyManagerOf",
+                    studyRepository.findFirst5ByManagersContainingAndClosedOrderByPublishedDateTimeDesc(account, false));
+            model.addAttribute("studyMemberOf",
+                    studyRepository.findFirst5ByMembersContainingAndClosedOrderByPublishedDateTimeDesc(account, false));
+            return "login-after-index";
+        }
 
         model.addAttribute("studyList", studyRepository.findFirst9ByPublishedAndClosedOrderByPublishedDateTimeDesc(true, false));
         return "index";
     }
-
     @GetMapping("/login")
     public String login(){
 
